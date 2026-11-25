@@ -67,12 +67,13 @@ Use `sql/phase1/` instead for the first version. Each schema script drops and re
 
 ## Verification
 
-Both phases were run on a local **MySQL 8.0.46** server (the original ran on MySQL 9 in DB-Fiddle):
+Both phases were run, each in its own database, on local **MySQL 9.6.0** and **MySQL 8.0.46** servers (the original ran on MySQL 9 in DB-Fiddle):
 
 - both schema scripts and both query scripts ran without errors;
 - the query results match those described in the project reports: nine first-semester enrolments in the five-table join, two offerings with at least two students (3 each), one enrolment marked as dropped after the cancellation;
 - after deleting offering 5, its enrolments and schedules were gone, and in project 2 the attendance rows for its schedule were removed as well (cascade through `schedules`);
-- after the project 2 transaction, the new enrolment exists and its grade is `NULL`, confirming the rollback to the savepoint.
+- after the project 2 transaction, the new enrolment exists and its grade is `NULL`, confirming the rollback to the savepoint;
+- both versions returned the same rows; two queries without `ORDER BY` listed them in a different order.
 
 There is no automated test suite.
 
